@@ -55,12 +55,17 @@
     .nav-logo {
       font-family: var(--font-display);
       font-weight: 800;
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: var(--white);
       letter-spacing: .04em;
       text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
     }
 
+    .nav-logo .logo-main { font-size: 1.1rem; letter-spacing: .08em; }
+    .nav-logo .logo-sub { font-size: 9px; font-weight: 500; color: var(--muted); letter-spacing: .14em; text-transform: uppercase; }
     .nav-logo span { color: var(--electric); }
 
     .nav-links {
@@ -116,12 +121,98 @@
     #hero {
       position: relative;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 4rem;
       padding: 8rem 4rem 5rem;
       z-index: 1;
     }
+
+    .hero-left { display: flex; flex-direction: column; }
+
+    .hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .hero-visual {
+      width: 100%;
+      max-width: 480px;
+      aspect-ratio: 1;
+      position: relative;
+    }
+
+    .hero-visual-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid var(--electric-dim);
+      animation: spin-slow linear infinite;
+    }
+
+    .ring-1 { inset: 0; animation-duration: 20s; }
+    .ring-2 { inset: 10%; animation-duration: 15s; animation-direction: reverse; }
+    .ring-3 { inset: 22%; animation-duration: 25s; }
+
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .ring-1::before, .ring-2::before, .ring-3::before {
+      content: '';
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--electric);
+      top: -4px; left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 12px var(--electric);
+    }
+
+    .hero-visual-center {
+      position: absolute;
+      inset: 30%;
+      border-radius: 50%;
+      background: var(--electric-dim);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .hero-visual-center img {
+      width: 70%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .hero-cards {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-card {
+      position: absolute;
+      background: var(--navy-mid);
+      border: 1px solid var(--border-soft);
+      border-radius: 8px;
+      padding: .625rem .875rem;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .hero-card-label { color: var(--muted); font-size: 10px; text-transform: uppercase; letter-spacing: .06em; }
+    .hero-card-val { color: var(--white); font-weight: 600; font-family: var(--font-display); }
+    .hero-card-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--electric); display: inline-block; margin-right: 4px; animation: pulse 2s ease-in-out infinite; }
+
+    .card-aws { top: 8%; right: 0; }
+    .card-sdvosb { bottom: 20%; left: -5%; }
+    .card-status { top: 40%; right: -5%; }
 
     .hero-badge {
       display: inline-flex;
@@ -217,10 +308,11 @@
 
     .hero-stats {
       display: flex;
-      gap: 3rem;
-      margin-top: 4rem;
-      padding-top: 3rem;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 2.5rem;
       border-top: 1px solid var(--border-soft);
+      flex-wrap: wrap;
     }
 
     .stat-item {}
@@ -594,8 +686,9 @@
       nav { padding: 1rem 1.5rem; }
       .nav-links { display: none; }
       section { padding: 4rem 1.5rem; }
-      #hero { padding: 7rem 1.5rem 4rem; }
-      .hero-stats { gap: 2rem; flex-wrap: wrap; }
+      #hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 4rem; gap: 3rem; }
+      .hero-right { display: none; }
+      .hero-stats { gap: 2rem; }
       .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
       footer { padding: 2rem 1.5rem; }
@@ -612,7 +705,10 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#hero" class="nav-logo"><img src="RESILLogo2.png" alt="RESIL Technology Solutions" style="height:36px;width:auto;background:white;border-radius:6px;padding:3px 6px;" /></a>
+    <a href="#hero" class="nav-logo">
+      <span class="logo-main">RESIL<span>.</span></span>
+      <span class="logo-sub">Technology Solutions</span>
+    </a>
     <ul class="nav-links">
       <li><a href="#services">Services</a></li>
       <li><a href="#projects">Portfolio</a></li>
@@ -624,31 +720,58 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-badge fade-up">SDVOSB · Milwaukee, WI · Est. 2026</div>
-    <h1 class="hero-title fade-up delay-1">
-      Cloud &amp; IT<br/>
-      solutions built<br/>
-      to <span class="accent">scale.</span>
-    </h1>
-    <p class="hero-sub fade-up delay-2">
-      RESIL Technology Solutions delivers cloud infrastructure, software development, and IT consulting services to government and commercial clients across Wisconsin and beyond.
-    </p>
-    <div class="hero-actions fade-up delay-3">
-      <a href="#projects" class="btn-primary">View portfolio</a>
-      <a href="#contact" class="btn-secondary">Work with us</a>
+    <div class="hero-left">
+      <div class="hero-badge fade-up">SDVOSB · Milwaukee, WI · Est. 2026</div>
+      <h1 class="hero-title fade-up delay-1">
+        Cloud &amp; IT<br/>
+        solutions built<br/>
+        to <span class="accent">scale.</span>
+      </h1>
+      <p class="hero-sub fade-up delay-2">
+        RESIL Technology Solutions delivers cloud infrastructure, software development, and IT consulting services to government and commercial clients across Wisconsin and beyond.
+      </p>
+      <div class="hero-actions fade-up delay-3">
+        <a href="#projects" class="btn-primary">View portfolio</a>
+        <a href="#contact" class="btn-secondary">Work with us</a>
+      </div>
+      <div class="hero-stats fade-up delay-4">
+        <div class="stat-item">
+          <div class="stat-num">6<span>+</span></div>
+          <div class="stat-label">NAICS codes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span>SDVOSB</span></div>
+          <div class="stat-label">Certified (pending)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">AWS<span> · </span>Azure</div>
+          <div class="stat-label">Cloud platforms</div>
+        </div>
+      </div>
     </div>
-    <div class="hero-stats fade-up delay-4">
-      <div class="stat-item">
-        <div class="stat-num">6<span>+</span></div>
-        <div class="stat-label">NAICS codes</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num"><span>SDVOSB</span></div>
-        <div class="stat-label">Certified (pending)</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-num">AWS<span> · </span>Azure</div>
-        <div class="stat-label">Cloud platforms</div>
+
+    <div class="hero-right fade-up delay-2">
+      <div class="hero-visual">
+        <div class="hero-visual-ring ring-1"></div>
+        <div class="hero-visual-ring ring-2"></div>
+        <div class="hero-visual-ring ring-3"></div>
+        <div class="hero-visual-center">
+          <img src="RESILLogo2.png" alt="RESIL Technology Solutions" />
+        </div>
+        <div class="hero-cards">
+          <div class="hero-card card-aws">
+            <div class="hero-card-label">Platform</div>
+            <div class="hero-card-val">AWS · Azure · GCP</div>
+          </div>
+          <div class="hero-card card-sdvosb">
+            <div class="hero-card-label">Certification</div>
+            <div class="hero-card-val"><span class="hero-card-dot"></span>SDVOSB Pending</div>
+          </div>
+          <div class="hero-card card-status">
+            <div class="hero-card-label">Status</div>
+            <div class="hero-card-val"><span class="hero-card-dot"></span>Active · Milwaukee, WI</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
